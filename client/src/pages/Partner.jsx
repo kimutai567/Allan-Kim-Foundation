@@ -1,6 +1,13 @@
 import { useState } from 'react'
 import { api } from '../api'
 
+const WAYS = [
+  ['💰', 'Fund a program', 'Co-fund dignity packs, school shoes or disability support and follow the program total on this site.'],
+  ['📦', 'Give in kind', 'Donate pads, shoes, assistive devices or logistics to reach more schools.'],
+  ['🏫', 'Work through schools', 'Help us reach pupils through schools, county offices and community organizations.'],
+  ['📣', 'Raise awareness', 'Share the work with your staff, members and networks.'],
+]
+
 export default function Partner() {
   const empty = { organization: '', type: 'government', contact_name: '', email: '', phone: '', message: '' }
   const [f, setF] = useState(empty)
@@ -15,6 +22,11 @@ export default function Partner() {
     <section className="section">
       <h1>Partner With Us</h1>
       <p>We welcome governments, global foundations, NGOs, corporates and schools to partner on sanitary health, school shoes, disability inclusion and more.</p>
+      <h3>Ways to partner</h3>
+      <div className="grid" style={{ marginBottom: 32 }}>
+        {WAYS.map(([icon, t, d]) => <div className="card" key={t}><div className="icon">{icon}</div><h3>{t}</h3><p>{d}</p></div>)}
+      </div>
+      <h3>Send a partnership request</h3>
       <form className="form" onSubmit={submit}>
         <label>Organization<input required value={f.organization} onChange={set('organization')} /></label>
         <label>Type<select value={f.type} onChange={set('type')}>

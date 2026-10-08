@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { api, kes } from '../../api'
+import { api, money } from '../../api'
 
 const TABS = ['Overview', 'Donations', 'Partners', 'Messages', 'Programs', 'Payment Settings', 'Account']
 
@@ -41,7 +41,7 @@ function Overview() {
   return (
     <>
       <div className="grid">
-        <div className="card"><h3>{kes(s.confirmed.s)}</h3>Confirmed (KES), {s.confirmed.c} donations</div>
+        <div className="card"><h3>{money(s.confirmed.s)}</h3>Confirmed (KES donations), {s.confirmed.c} donations</div>
         <div className="card"><h3>{s.pending}</h3>Pending donations to verify</div>
         <div className="card"><h3>{s.newPartners}</h3>New partner requests</div>
         <div className="card"><h3>{s.messages}</h3>Messages</div>
@@ -64,7 +64,7 @@ function Donations() {
         <tr key={d.id}>
           <td>{date(d.created_at)}</td>
           <td>{d.name || 'Anonymous'}{d.anonymous ? ' (hidden)' : ''}<br /><small>{d.email} {d.phone}</small></td>
-          <td>{d.currency} {d.amount}</td><td>{d.method}</td><td>{d.reference}</td><td>{d.program || '-'}</td>
+          <td>{d.currency === 'KES' ? money(d.amount) : ` `}</td><td>{d.method}</td><td>{d.reference}</td><td>{d.program || '-'}</td>
           <td><span className={'tag ' + d.status}>{d.status}</span></td>
           <td>
             {d.status !== 'confirmed' && <button className="btn sm" onClick={() => set(d.id, 'confirmed')}>Confirm</button>}{' '}
@@ -126,7 +126,7 @@ function Programs() {
           <div><button className="btn">Save</button> <button type="button" className="btn gray" onClick={() => setEdit(null)}>Cancel</button></div>
         </form>)}
       <table style={{ marginTop: 16 }}><thead><tr><th></th><th>Title</th><th>Raised / Goal</th><th>Visible</th><th></th></tr></thead>
-        <tbody>{rows.map(p => <tr key={p.id}><td>{p.icon}</td><td>{p.title}</td><td>{kes(p.raised)} / {kes(p.goal)}</td><td>{p.active ? 'Yes' : 'No'}</td>
+        <tbody>{rows.map(p => <tr key={p.id}><td>{p.icon}</td><td>{p.title}</td><td>{money(p.raised)} / {money(p.goal)}</td><td>{p.active ? 'Yes' : 'No'}</td>
           <td><button className="btn sm" onClick={() => setEdit(p)}>Edit</button></td></tr>)}</tbody></table>
     </>
   )
@@ -137,6 +137,7 @@ const LABELS = {
   bank_name: 'Bank name', bank_account_name: 'Bank account name', bank_account_number: 'Bank account number', bank_branch: 'Bank branch',
   crypto_btc: 'Bitcoin (BTC) address', crypto_eth: 'Ethereum (ETH) address', crypto_eth_network: 'Ethereum network (e.g. ERC-20)',
   crypto_usdt: 'USDT address', crypto_usdt_network: 'USDT network (e.g. TRC20)',
+  usd_kes_rate: 'Exchange rate: KES per 1 USD (used to show dollar amounts)',
 }
 function PaymentSettings() {
   const [s] = useLoad('/payment-info')

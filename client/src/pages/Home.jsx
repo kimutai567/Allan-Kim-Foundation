@@ -1,6 +1,6 @@
 ﻿import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { api, kes } from '../api'
+import { api, money } from '../api'
 import ProgramCard from '../components/ProgramCard.jsx'
 import Gallery from '../components/Gallery.jsx'
 
@@ -23,7 +23,7 @@ export default function Home() {
       </section>
       {stats && (
         <div className="stats overlap">
-          <div className="stat"><b>{kes(stats.raised)}</b>raised</div>
+          <div className="stat"><b>{money(stats.raised)}</b>raised</div>
           <div className="stat"><b>{stats.donations}</b>donations</div>
           <div className="stat"><b>{stats.partners}</b>partners</div>
         </div>

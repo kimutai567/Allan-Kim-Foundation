@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react'
 import { Routes, Route, NavLink, Link, Navigate, Outlet } from 'react-router-dom'
+import { api, setUsdRate } from './api'
 import Home from './pages/Home.jsx'
+import About from './pages/About.jsx'
 import Programs from './pages/Programs.jsx'
 import Donate from './pages/Donate.jsx'
 import Partner from './pages/Partner.jsx'
@@ -16,6 +19,7 @@ function Layout() {
           <span>Allan Kim<small>Foundation</small></span>
         </Link>
         <nav>
+          <NavLink to="/about">About</NavLink>
           <NavLink to="/programs">Programs</NavLink>
           <NavLink to="/partner">Partner With Us</NavLink>
           <NavLink to="/contact">Contact</NavLink>
@@ -35,10 +39,15 @@ function Layout() {
 const Guard = ({ children }) => localStorage.getItem('akf_token') ? children : <Navigate to="/admin/login" replace />
 
 export default function App() {
+  const [rateKey, setRateKey] = useState(0)
+  useEffect(() => {
+    api('/payment-info').then(i => { setUsdRate(i.usd_kes_rate); setRateKey(k => k + 1) }).catch(() => {})
+  }, [])
   return (
-    <Routes>
+    <Routes key={rateKey}>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/programs" element={<Programs />} />
         <Route path="/donate" element={<Donate />} />
         <Route path="/partner" element={<Partner />} />

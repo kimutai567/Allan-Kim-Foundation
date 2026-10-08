@@ -56,6 +56,7 @@ const defaultSettings = {
   crypto_eth_network: 'ERC-20',
   crypto_usdt: 'TJqxzvzjJbFJYktYtNY48dXmHxcXAqcktY',
   crypto_usdt_network: 'TRC20',
+  usd_kes_rate: '129',
 };
 const insSet = db.prepare('INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)');
 for (const [k, v] of Object.entries(defaultSettings)) insSet.run(k, v);
@@ -100,7 +101,7 @@ app.get('/api/programs', (req, res) =>
 app.get('/api/payment-info', (req, res) => res.json(getSettings()));
 
 app.get('/api/stats', (req, res) => {
-  const r = db.prepare("SELECT COUNT(*) c, COALESCE(SUM(amount),0) s FROM donations WHERE status='confirmed'").get();
+  const r = db.prepare("SELECT COUNT(*) c, COALESCE(SUM(amount),0) s FROM donations WHERE status='confirmed' AND currency='KES'").get();
   res.json({ donations: r.c, raised: r.s, partners: db.prepare("SELECT COUNT(*) c FROM partners WHERE status='active'").get().c });
 });
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { QRCodeSVG } from 'qrcode.react'
-import { api } from '../api'
+import { api, getUsdRate, kes } from '../api'
 
 const METHODS = [['mpesa', 'M-Pesa'], ['airtel', 'Airtel Money'], ['bank', 'Bank Transfer'], ['crypto', 'Crypto']]
 
@@ -23,7 +23,7 @@ export default function Donate() {
   async function submit(e) {
     e.preventDefault(); setBusy(true); setMsg(null)
     try {
-      const r = await api('/donations', { method: 'POST', body: { ...f, method, currency: coin, program_id: f.program_id || null } })
+      const r = await api('/donations', { method: 'POST', body: { ...f, amount: method === 'crypto' ? f.amount : Math.round(Number(f.amount) * getUsdRate()), method, currency: coin, program_id: f.program_id || null } })
       setMsg({ ok: true, text: r.message }); setF({ ...f, amount: '', reference: '' })
     } catch (err) { setMsg({ ok: false, text: err.message }) }
     setBusy(false)
@@ -51,7 +51,8 @@ export default function Donate() {
 
       <h3>2. Tell us about your donation</h3>
       <form className="form" onSubmit={submit}>
-        <label>Amount ({method === 'crypto' ? coin : 'KES'})<input type="number" step="any" min="1" required value={f.amount} onChange={set('amount')} /></label>
+        <label>Amount ({method === 'crypto' ? coin : 'USD'})<input type="number" step="any" min="1" required value={f.amount} onChange={set('amount')} />
+          {method !== 'crypto' && Number(f.amount) > 0 && <small>≈ {usd(f.amount)} USD</small>}</label>
         <label>{method === 'crypto' ? 'Transaction hash' : method === 'bank' ? 'Bank reference / slip number' : 'Transaction code (e.g. QGH7XXXXX)'}<input required value={f.reference} onChange={set('reference')} /></label>
         <label>Support program<select value={f.program_id} onChange={set('program_id')}><option value="">Where it is needed most</option>{programs.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}</select></label>
         <label>Your name (optional)<input value={f.name} onChange={set('name')} /></label>

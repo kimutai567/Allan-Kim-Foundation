@@ -80,3 +80,7 @@ h1,h2,h3 { line-height:1.2; }
 .footer { background:#2b1408; color:#f3e3d6; border:0; }
 .footer .muted { color:#c8a98f; margin:0; } .footer a { color:#ffb37a; }
 .footer p { margin:8px 0; }
+
+.page-hero { text-align:center; color:#fff; padding:70px 5vw; background:linear-gradient(180deg,#7a2e0acc,#3b150bdd), url('/images/classroom.jpg') center/cover; }
+.page-hero h1 { margin:0 0 8px; font-size:clamp(1.9rem,4.5vw,3rem); }
+.page-hero p { margin:0; font-size:1.15rem; }

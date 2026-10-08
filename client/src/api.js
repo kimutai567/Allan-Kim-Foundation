@@ -15,3 +15,10 @@ export async function api(path, { method = 'GET', body, admin = false } = {}) {
 }
 
 export const kes = n => 'KES ' + Number(n || 0).toLocaleString();
+
+// Amounts are stored in KES; USD is derived from the admin-set rate.
+let usdRate = 129;
+export const setUsdRate = r => { if (Number(r) > 0) usdRate = Number(r); };
+export const getUsdRate = () => usdRate;
+export const usd = n => '$' + (Number(n || 0) / usdRate).toLocaleString(undefined, { maximumFractionDigits: 2 });
+export const money = n => `${usd(n)} (${kes(n)})`;
