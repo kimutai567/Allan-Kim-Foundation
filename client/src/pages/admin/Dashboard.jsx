@@ -41,7 +41,7 @@ function Overview() {
   return (
     <>
       <div className="grid">
-        <div className="card"><h3>{money(s.confirmed.s)}</h3>Confirmed (KES donations), {s.confirmed.c} donations</div>
+        <div className="card"><h3>{money(s.confirmed.s)}</h3>Confirmed KES total · {s.confirmed.c} confirmed donations in all currencies</div>
         <div className="card"><h3>{s.pending}</h3>Pending donations to verify</div>
         <div className="card"><h3>{s.newPartners}</h3>New partner requests</div>
         <div className="card"><h3>{s.messages}</h3>Messages</div>

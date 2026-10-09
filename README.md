@@ -50,7 +50,11 @@ The command displays the admin email for the selected account and asks for a new
 - Public pages: home, programs, donation instructions/form, partnership form, and contact form.
 - Donation records are submitted as **pending** after the donor pays outside the site. An administrator must verify and confirm or reject each record; this app does not initiate or process payments.
 - Admin dashboard at `/admin`: donation review, partnership status management, contact-message inbox, program editing, payment settings, and password change.
-- Confirmed KES donations update the selected program's raised total. Public donation statistics count confirmed donations; the raised total includes all confirmed currencies, so it should not be interpreted as a KES-only figure when crypto donations are present.
+- On the donation form, M-Pesa, Airtel Money and bank amounts are entered in **KES**, with the approximate USD equivalent shown below (using the exchange rate set in Payment Settings). Crypto amounts are entered in the selected coin.
+- Confirmed KES donations update the selected program's raised total. The "raised" amount on the public pages and admin dashboard is a **KES-only** total; crypto donations are not converted or included in it.
+- The donation count on the public pages and admin dashboard counts **all confirmed donations in every currency**, including crypto. Pending and rejected donations are not counted until an administrator confirms them.
+- There are no donor accounts. Every figure shown (public and admin) covers all donors combined, not an individual donor's giving.
+- The donation form needs the API running. If only the client is started, submitting shows "Something went wrong".
 - Data is stored in SQLite on the API host.
 
 ## Important before accepting donations

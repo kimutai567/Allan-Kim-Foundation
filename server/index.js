@@ -101,8 +101,9 @@ app.get('/api/programs', (req, res) =>
 app.get('/api/payment-info', (req, res) => res.json(getSettings()));
 
 app.get('/api/stats', (req, res) => {
-  const r = db.prepare("SELECT COUNT(*) c, COALESCE(SUM(amount),0) s FROM donations WHERE status='confirmed' AND currency='KES'").get();
-  res.json({ donations: r.c, raised: r.s, partners: db.prepare("SELECT COUNT(*) c FROM partners WHERE status='active'").get().c });
+  const r = db.prepare("SELECT COALESCE(SUM(amount),0) s FROM donations WHERE status='confirmed' AND currency='KES'").get();
+  const all = db.prepare("SELECT COUNT(*) c FROM donations WHERE status='confirmed'").get();
+  res.json({ donations: all.c, raised: r.s, partners: db.prepare("SELECT COUNT(*) c FROM partners WHERE status='active'").get().c });
 });
 
 app.post('/api/donations', limit(10, 60000), (req, res) => {
@@ -146,7 +147,10 @@ app.post('/api/admin/login', limit(10, 60000), (req, res) => {
 app.get('/api/admin/summary', auth, (req, res) => {
   const q = s => db.prepare(s).get();
   res.json({
-    confirmed: q("SELECT COUNT(*) c, COALESCE(SUM(amount),0) s FROM donations WHERE status='confirmed' AND currency='KES'"),
+    confirmed: {
+      ...q("SELECT COALESCE(SUM(amount),0) s FROM donations WHERE status='confirmed' AND currency='KES'"),
+      c: q("SELECT COUNT(*) c FROM donations WHERE status='confirmed'").c,
+    },
     pending: q("SELECT COUNT(*) c FROM donations WHERE status='pending'").c,
     newPartners: q("SELECT COUNT(*) c FROM partners WHERE status='new'").c,
     messages: q('SELECT COUNT(*) c FROM messages').c,
