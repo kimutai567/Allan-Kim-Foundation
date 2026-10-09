@@ -60,6 +60,7 @@ The command displays the admin email for the selected account and asks for a new
 ## Important before accepting donations
 
 The API seeds the payment instructions configured in `server/index.js`; existing databases that still contain the original sample values are updated to the configured details on startup. An administrator should sign in to `/admin`, open **Payment Settings**, and verify every number, account name, bank detail, wallet address, and network before publishing the site or accepting donations. Check the Donate page afterward. Payment instructions can be changed in the admin dashboard without editing code.
+ADMIN EMAIL: admin@allankim.org
 
 ## Useful commands
 
