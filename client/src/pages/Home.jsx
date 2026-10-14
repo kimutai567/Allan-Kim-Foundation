@@ -7,7 +7,12 @@ import Gallery from '../components/Gallery.jsx'
 export default function Home() {
   const [programs, setPrograms] = useState([])
   const [stats, setStats] = useState(null)
-  useEffect(() => { api('/programs').then(setPrograms).catch(() => {}); api('/stats').then(setStats).catch(() => {}) }, [])
+  const [partners, setPartners] = useState([])
+  useEffect(() => {
+    api('/programs').then(setPrograms).catch(() => {})
+    api('/stats').then(setStats).catch(() => {})
+    api('/partners/active').then(setPartners).catch(() => {})
+  }, [])
   return (
     <>
       <section className="hero">
@@ -39,6 +44,15 @@ export default function Home() {
           <div className="grid">{programs.map(p => <ProgramCard key={p.id} p={p} />)}</div>
         </div>
       </section>
+      {partners.length > 0 && (
+        <section className="section">
+          <h2 className="title">Our Partners</h2>
+          <p className="lead">We are grateful to work alongside these organizations to support children and communities.</p>
+          <div className="grid">
+            {partners.map(p => <div className="card" key={p.organization}><h3>{p.organization}</h3></div>)}
+          </div>
+        </section>
+      )}
       <section className="section">
         <h2 className="title">How you can help</h2>
         <div className="grid">

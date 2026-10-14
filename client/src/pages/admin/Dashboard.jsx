@@ -80,6 +80,8 @@ function Partners() {
   const set = async (id, status) => { await api('/admin/partners/' + id, { method: 'PATCH', admin: true, body: { status } }); load() }
   if (!rows) return <p>Loading…</p>
   return (
+    <>
+    <p>Requests marked <b>active</b> are listed by organization name in the public website’s Our Partners section.</p>
     <div className="scroll"><table>
       <thead><tr><th>Date</th><th>Organization</th><th>Contact</th><th>Message</th><th>Status</th></tr></thead>
       <tbody>{rows.map(p => (
@@ -91,6 +93,7 @@ function Partners() {
             {['new', 'contacted', 'active', 'declined'].map(s => <option key={s}>{s}</option>)}</select></td>
         </tr>))}</tbody>
     </table></div>
+    </>
   )
 }
 
