@@ -56,6 +56,7 @@ The command displays the admin email for the selected account and asks for a new
 - There are no donor accounts. Every figure shown (public and admin) covers all donors combined, not an individual donor's giving.
 - The donation form needs the API running. If only the client is started, submitting shows "Something went wrong".
 - Data is stored in SQLite on the API host.
+- On the partners section , users should be able to see the patners wie are patnering with
 
 ## Important before accepting donations
 
